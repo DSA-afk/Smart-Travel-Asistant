@@ -1,31 +1,40 @@
-# Smart-Travel-Asistant
-# Smart-Travel-Agent: 基于 ReAct 架构的自研智能旅行助手
+# Smart-Travel-Agent: 基于 ReAct 架构的智能旅行助手 (设计与规划中)
 
-![Python Version](https://img.shields.io/badge/python-3.10%2B-blue)
-![Framework](https://img.shields.io/badge/Framework-Self--Developed-orange)
-![Agent Pattern](https://img.shields.io/badge/Pattern-ReAct-green)
+![Status](https://img.shields.io/badge/Status-In--Planning-yellow)
+![Pattern](https://img.shields.io/badge/Pattern-ReAct-green)
+![Target](https://img.shields.io/badge/Target-Agent--Infrastructure-blue)
 
-本项目是基于 Datawhale `hello-agents` 开源课程体系开发的实战项目。其核心目标是脱离 LangChain 等高层封装框架，通过原生的 Python 逻辑从零构建一个具备 **推理 (Reasoning)** 与 **行动 (Acting)** 能力的智能体。
+本项目目前处于**架构设计与原型规划阶段**。旨在通过对 Datawhale `hello-agents` 课程体系的深入研究，脱离成熟框架（如 LangChain），从底层逻辑出发构建一个具备自主推理与任务执行能力的智能体原型。
 
-## 🌟 项目亮点
+## 🎯 设计目标
 
-- **零框架依赖：** 避开黑盒框架，手写 Agent 核心运行循环（Execution Loop），深入理解大模型如何通过 Prompt 状态机实现自主决策。
-- **ReAct 范式实现：** 严格遵循 `Thought -> Action -> Observation` 闭环，确保智能体在复杂任务下逻辑清晰、步骤可控。
-- **动态工具调用 (Tool Use)：** 实现了基于 Python 函数注释自动解析的工具注册机制，支持智能体自主调用搜索、天气、地图等外部接口。
-- **多约束规划能力：** 能够处理带有预算限制、特定偏好、时间冲突等复杂约束的旅行规划任务。
+本项目旨在探索大模型在处理**多约束条件（预算、时序、偏好）**下的复杂任务规划能力。通过手写 Agent 核心循环，掌握模型如何通过 Prompt 状态机实现从“语义理解”到“工具执行”的跨越。
 
-## 📂 目录结构
+## 🏗️ 架构设计 (System Architecture)
+
+虽然代码尚未完全实现，但系统将遵循以下模块化设计方案：
+
+### 1. 核心推理引擎 (Agent Core)
+- **ReAct 循环：** 拟采用 `while` 循环结构，实现标准的 `Thought -> Action -> Observation` 闭环。
+- **输出解析器 (Parser)：** 设计一套基于正则表达式或 JSON 校验的解析机制，将 LLM 的文本输出转化为可执行的 Python 指令。
+- **状态追踪：** 使用轻量级字典结构维护对话历史与工具执行轨迹，作为模型的“短期记忆”。
+
+### 2. 工具集成方案 (Tool Integration)
+计划封装以下三类核心工具接口：
+- **搜索服务：** 对接 Tavily/Serper API 获取实时旅行资讯。
+- **地理信息：** 模拟高德/Google Maps 接口进行路径规划。
+- **交易模拟：** 模拟酒店、餐厅的预订逻辑，验证 Agent 的闭环操作能力。
+
+### 3. 提示词工程 (Prompt Engineering)
+- 采用 **Few-shot Prompting** 引导模型掌握特定的思考格式。
+- 设计特定的 **System Role**，强化模型对预算和时间约束的敏感度。
+
+## 📂 规划中的项目结构
 
 ```text
 Smart-Travel-Agent/
-├── agent/
-│   ├── core.py          # 核心引擎：实现 ReAct 运行循环与状态管理
-│   ├── prompt.py        # 提示词工程：定义 System Prompt 与 ReAct 格式约束
-│   └── parser.py        # 输出解析器：从 LLM 回复中提取 Action 与参数
-├── tools/
-│   ├── search_tool.py   # 搜索工具：基于 Tavily/Serper 接口获取实时信息
-│   ├── map_tool.py      # 地图工具：模拟路径规划与距离计算
-│   └── hotel_tool.py    # 预订工具：模拟酒店/餐厅查询与预订逻辑
-├── main.py              # 项目入口：启动智能助手交互界面
-├── requirements.txt     # 项目依赖库
-└── README.md            # 项目说明文档
+├── docs/                # 设计文档与架构图
+├── agent/               # [待开发] 核心推理逻辑与解析器
+├── tools/               # [待开发] 工具定义与模拟接口
+├── tests/               # [待开发] 测试用例
+└── README.md
